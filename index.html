@@ -1,5 +1,5 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
-<title>新型コロナウイルス感染症患者の療養状況 病床使用率 - 厚労省発表データ</title>
+<title>新型コロナワクチンの接種状況（医療従事者含まず） - 政府CIOポータルオープンデータ</title>
 <link rel="apple-touch-icon" href="mhlw-beds.png"/>
 <meta property="og:image" content="mhlw-beds.png">
 <meta name="format-detection" content="telephone=no"/>
@@ -9,12 +9,16 @@ import { CSV } from "https://js.sabae.cc/CSV.js";
 import tabularmaps from "https://js.sabae.cc/tabularmapsjapan.mjs";
 
 onload = async () => {
-	const url = "https://www.stopcovid19.jp/data/covid19japan_beds/latest.csv";
+	const url = "https://code4fukui.github.io/covid19vaccine/latest_summary.csv";
 	const data = CSV.parse(await (await fetch(url)).text());
 	console.log(data);
-	lastUpdate.textContent = "更新日: " + data[0].更新日;
+	lastUpdate.textContent = "更新日: " + data[0].date;
+	
+	const urlp = "https://code4fukui.github.io/population_jp/population_jp.csv";
+	const pop = CSV.parse(await (await fetch(urlp)).text());
+	console.log(pop);
 
-	const shownames = ["入院患者病床使用率", "重症患者病床使用率", "宿泊療養施設居室使用率"];
+	const shownames = ["ワクチン接種完了率", "ワクチン初回接種率"];
 	shownames.forEach((n) => {
 		const opt = document.createElement("option");
 		opt.value = n;
@@ -26,43 +30,32 @@ onload = async () => {
 	const show = () => {
 		const showname = sel.value;
 		const getKPI = (pname, cname) => {
-			const p = data.find(a => a.都道府県名 === cname);
-			const kpi = p[showname];
-			const unit = showunit;
-			if (kpi.endsWith(unit)) {
-				return [kpi.substring(0, kpi.length - unit.length), unit];
+			console.log(pname, cname);
+			const d = data.find(a => a.pref === cname);
+			const p = pop.find(a => a.name_jp === cname);
+			if (showname == "ワクチン接種完了率") {
+				return [(d.sum / p.population_jp * 100).toFixed(2), "%"];
+			} else if (showname == "ワクチン初回接種率") {
+				return [(d.mid / p.population_jp * 100).toFixed(2), "%"];
 			}
-			return [kpi, unit];
+			return null;
 		};
 		const colorTabularMaps = (pname, tmap) => {
 			let min = 0;
 			let max = 100;
-			/*
 			for (const c of tmap.children) {
 				const cname = c.cellname;
 				if (cname !== "-") {
 					const [kpi, _] = getKPI(pname, cname);
-					if (isNaN(kpi)) continue;
-					if (kpi < min) { min = kpi; }
-					if (kpi > max) { max = kpi; }
-				}
-			}
-			*/
-			for (const c of tmap.children) {
-				const cname = c.cellname;
-				if (cname !== "-") {
-					const [kpi, _] = getKPI(pname, cname);
+					console.log(kpi);
 					if (isNaN(kpi)) continue;
 					const n = (parseFloat(kpi) - min) / (max - min);
-					const h = 0;
+					const h = 30;
 					const s = 80;
 					const l = 100 - n * 50;
 					const col = `hsl(${h},${s}%,${l}%)`;
-					//const col = `rgba(200,50,50,${l / 100 * .5})`;
 					c.style.backgroundColor = col;
 					c.style.color = "black";
-					//c.appendChild(val);
-					//console.log(kpi, l, col);
 				}
 			}
 		};
@@ -127,19 +120,21 @@ a {
 </head>
 <body>
 
-<h1>新型コロナウイルス感染症患者の療養状況 病床使用率</h1>
+<h1>新型コロナワクチンの接種状況（医療従事者含まず）</h1>
 
 <select id="sel"></select>
 <div id="tmapc"></div>
 <div id=lastUpdate></div>
+<div>※医療従事者は含まないデータです<br>（医療従者を含むデータは「<a href=https://www.kantei.go.jp/jp/headline/kansensho/vaccine.html>新型コロナワクチンについて | 首相官邸ホームページ</a>」参照）</div>
 
-<a href="https://www.stopcovid19.jp/"><img id="banner" src="img/stopcovid19_banner.png"><br>
-毎日更新「COVID-19 新型コロナウイルス対策ダッシュボード」もどうぞ</a>
+<a href="https://www.stopcovid19.jp/"><img id="banner" src="https://www.stopcovid19.jp/img/stopcovid19_banner.png"><br>
+毎日更新「COVID-19 新型コロナウイルス対策ダッシュボード」</a>
 
 <div class="credit">
 APP: CC BY <a href=https://fukuno.jig.jp/2923>@taisukef 福野泰介</a><br>
-DATA: <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/newpage_00023.html">新型コロナウイルス感染症患者の療養状況、病床数等に関する調査結果</a> → (CSV化 by <a href="https://www.stopcovid19.jp/">COVID-19 新型コロナウイルス対策ダッシュボード</a>)<br>
-LAYOUT: <a href=tabularmaps_japan.csv>TabularMaps Japan - 日本カラム地図 CSV</a> CC0 <a href=https://github.com/tabularmaps/hq>カラム地図 / TabularMaps on Github</a><br>
+DATA: <a href="https://cio.go.jp/c19vaccine_dashboard">新型コロナワクチンの接種状況（高齢者等） | 政府CIOポータル</a> → <a href=https://code4fukui.github.io/covid19vaccine/latest_summary.csv>CSV</a> - <a href="https://github.com/code4fukui/covid19vaccine/">covid19vaccine by Code for Fukui</a><br>
+DATA: <a href="https://www.stat.go.jp/data/jinsui/2019np/index.html">統計局ホームページ/人口推計/人口推計（2019年（令和元年）10月1日現在）</a> → <a href=https://code4fukui.github.io/population_jp/population_jp.csv>CSV</a> - <a href="https://github.com/code4fukui/population_jp/">日本の都道府県別人口推計 by Code for Fukui</a><br>
+LAYOUT: <a href=https://github.com/tabularmaps/areamap>TabularMaps Japan - 日本カラム地図 CSV</a> CC0 <a href=https://github.com/tabularmaps/hq>カラム地図 / TabularMaps on Github</a><br>
 </div>
 
 </body>
