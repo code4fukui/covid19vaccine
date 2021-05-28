@@ -48,4 +48,5 @@ const makeSummary = async () => {
   console.log(res);
   await Deno.writeTextFile("latest_summary.csv", CSV.stringify(res));
 };
+await download();
 await makeSummary();
