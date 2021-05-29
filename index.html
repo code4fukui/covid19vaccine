@@ -1,22 +1,19 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>新型コロナワクチンの接種状況（医療従事者含まず） - 政府CIOポータルオープンデータ</title>
-<link rel="apple-touch-icon" href="mhlw-beds.png"/>
-<meta property="og:image" content="mhlw-beds.png">
-<meta name="format-detection" content="telephone=no"/>
 <script type='module'>
 
 import { CSV } from "https://js.sabae.cc/CSV.js";
 import tabularmaps from "https://js.sabae.cc/tabularmapsjapan.mjs";
 
+const fetchCSV = async (url) => CSV.parse(await (await fetch(url)).text());
+
 onload = async () => {
-	const url = "https://code4fukui.github.io/covid19vaccine/latest_summary.csv";
-	const data = CSV.parse(await (await fetch(url)).text());
-	console.log(data);
+	const [data, pop] = await Promise.all([
+		"https://code4fukui.github.io/covid19vaccine/latest_summary.csv",
+		"https://code4fukui.github.io/population_jp/population_jp.csv",
+	].map(fetchCSV));
+	console.log(data, pop);
 	lastUpdate.textContent = "更新日: " + data[0].date;
-	
-	const urlp = "https://code4fukui.github.io/population_jp/population_jp.csv";
-	const pop = CSV.parse(await (await fetch(urlp)).text());
-	console.log(pop);
 
 	const shownames = ["ワクチン接種完了率", "ワクチン初回接種率"];
 	shownames.forEach((n) => {
@@ -30,7 +27,6 @@ onload = async () => {
 	const show = () => {
 		const showname = sel.value;
 		const getKPI = (pname, cname) => {
-			console.log(pname, cname);
 			const d = data.find(a => a.pref === cname);
 			const p = pop.find(a => a.name_jp === cname);
 			if (showname == "ワクチン接種完了率") {
