@@ -1,0 +1,45 @@
+<meta charset="utf-8"><script type="module">
+import { style, h1, table, div, hr, link } from "https://js.sabae.cc/stdom.js";
+import { CSV } from "https://js.sabae.cc/CSV.js";
+
+onload = async () => {
+	// データ読み込み
+	const url = "https://code4fukui.github.io/covid19vaccine/latest_summary.csv";
+	const data = CSV.parse(await (await fetch(url)).text());
+	console.log(data);
+
+	const urlp = "https://code4fukui.github.io/population_jp/population_jp.csv";
+	const pop = CSV.parse(await (await fetch(urlp)).text());
+	console.log(pop);
+
+	// ランキング計算
+	const tbl = [];
+	for (let i = 0; i < 47; i++) {
+		const p = pop[i].population_jp;
+		const d = data[i];
+		tbl.push({
+			順位: "",
+			都道府県: d.pref,
+			接種完了率: (d.sum / p * 100).toFixed(2) + "%",
+			"初回接種率": (d.mid / p * 100).toFixed(2) + "%",
+		});
+	}
+	tbl.sort((a, b) => parseFloat(b.接種完了率) - parseFloat(a.接種完了率));
+	for (let i = 0; i < tbl.length; i++) {
+		tbl[i].順位 = (i + 1) + "位";
+	}
+	console.log(tbl);
+
+	// スタイル
+	style({ body: { "text-align": "center" }}); // ページ全体センタリング
+
+	// DOM
+	h1("ワクチン接種率ランキング");
+	div("データ更新日:" + data[0].date);
+	table(tbl);
+	hr();
+  link("データ: 新型コロナワクチンの接種状況（高齢者等） | 政府CIOポータル ", "https://cio.go.jp/c19vaccine_dashboard");
+	link("データ: 統計局ホームページ/人口推計/人口推計（2019年（令和元年）10月1日現在）", "https://www.stat.go.jp/data/jinsui/2019np/index.html");
+  link("アプリ: CC BY Code for Fukui", "https://fukuno.jig.jp/3229");
+};	
+</script>
