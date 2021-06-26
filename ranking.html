@@ -1,5 +1,5 @@
 <meta charset="utf-8"><script type="module">
-import { style, h1, table, div, hr, link } from "https://js.sabae.cc/stdom.js";
+import { style, h1, table, div, hr, link, add } from "https://js.sabae.cc/stdom.js";
 import { CSV } from "https://js.sabae.cc/CSV.js";
 
 onload = async () => {
@@ -37,6 +37,8 @@ onload = async () => {
 	h1("ワクチン接種率ランキング");
 	div("データ更新日:" + data[0].date);
 	table(tbl);
+	add("br");
+  link("関連： 都道府県別 新型コロナワクチンの接種状況", "./");
 	hr();
   link("データ: 新型コロナワクチンの接種状況（高齢者等） | 政府CIOポータル ", "https://cio.go.jp/c19vaccine_dashboard");
 	link("データ: 統計局ホームページ/人口推計/人口推計（2019年（令和元年）10月1日現在）", "https://www.stat.go.jp/data/jinsui/2019np/index.html");
