@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>covid19vaccine-data タグ</title>
+<style>
+body {
+  margin: 2.5em;
+  color: #334;
+}
+blockquote {
+  background-color: #f8f8f8;
+  padding: .5em;
+}
+.credit {
+  font-size: 80%;
+}
+a {
+  color: gray !important;
+}
+</style>
+</head>
+<body>
+<h1>covid19vaccine-data タグ</h1>
+
+<hr>
+<h2>タグ使用デモ</h2>
+<script type="module" src="https://code4fukui.github.io/covid19vaccine/covid19vaccine-data.js"></script>
+<covid19vaccine-data pref="福井県"></covid19vaccine-data>
+<br>
+<covid19vaccine-data></covid19vaccine-data>
+<br>
+※毎日自動的に更新されます
+<hr>
+<h2>タグ使用方法</h2>
+都道府県別（HTMLに下記2行を追加するだけ！都道府県名をprefで指定してください）
+<blockquote>
+&lt;script type="module" src="https://code4fukui.github.io/covid19vaccine/covid19vaccine-data.js"&gt;&lt;/script&gt;<br>
+&lt;covid19vaccine-data pref="福井県"&gt;&lt;/covid19vaccine-data&gt;<br>
+</blockquote>
+
+全国
+<blockquote>
+&lt;script type="module" src="https://code4fukui.github.io/covid19vaccine/covid19vaccine-data.js"&gt;&lt;/script&gt;<br>
+&lt;covid19vaccine-data&gt;&lt;/covid19vaccine-data&gt;<br>
+</blockquote>
+※複数使用する場合、script type="module" の1行目は1つで十分です。
+<hr>
+<div class=credit>
+APP: CC BY <a href=https://fukuno.jig.jp/3258>@taisukef 福野泰介</a> / <a href=https://github.com/code4fukui/covid19vaccine/>Code for FUKUI</a><br>
+DATA: <a href="https://cio.go.jp/c19vaccine_dashboard">新型コロナワクチンの接種状況（高齢者等） | 政府CIOポータル</a> → <a href=https://code4fukui.github.io/covid19vaccine/latest_summary.csv>CSV</a> - <a href="https://github.com/code4fukui/covid19vaccine/">covid19vaccine by Code for Fukui</a><br>
+DATA: <a href="https://www.stat.go.jp/data/jinsui/2019np/index.html">統計局ホームページ/人口推計/人口推計（2019年（令和元年）10月1日現在）</a> → <a href=https://code4fukui.github.io/population_jp/population_jp.csv>CSV</a> - <a href="https://github.com/code4fukui/population_jp/">日本の都道府県別人口推計 by Code for Fukui</a><br>
+</div>

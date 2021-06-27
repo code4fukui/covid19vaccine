@@ -18,7 +18,7 @@ class Covid19VaccineData extends HTMLElement {
 		const csv = async (url) => CSV.parse(await (await fetch(url)).text());
 		const data = await csv("https://code4fukui.github.io/covid19vaccine/latest_summary.csv")
 		const pop = await csv("https://code4fukui.github.io/population_jp/population_jp.csv");
-		console.log(data, pop);
+		//console.log(data, pop);
 		for (let i = 0; i < 47; i++) {
 			const p = pop[i].population_jp;
 			const d = data[i];
@@ -26,7 +26,7 @@ class Covid19VaccineData extends HTMLElement {
 			d.midrate = d.mid / p * 100;
 			d.sumrate = d.sum / p * 100;
 		}
-		console.log(data);
+		//console.log(data);
 		
 		// 全国合計計算
 		const sum = { population: 0, mid: 0, sum: 0 };
@@ -43,7 +43,7 @@ class Covid19VaccineData extends HTMLElement {
 
 		const pref = this.getAttribute("pref") || "日本";
 		const npref = JAPAN_PREF.indexOf(pref);
-		console.log(pref, npref, JAPAN_PREF);
+		//console.log(pref, npref, JAPAN_PREF);
 
 		const cr = (tag, cls, val) => {
 			const c = document.createElement(tag);
