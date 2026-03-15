@@ -1,4 +1,7 @@
 # covid19vaccine
+
+> 日本語のREADMEはこちらです: [README.ja.md](README.ja.md)
+
 Open data on COVID-19 vaccine status in Japan.
 
 ## Open Data
