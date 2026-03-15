@@ -1,14 +1,12 @@
 # covid19vaccine
-https://code4fukui.github.io/covid19vaccine/
+Open data on COVID-19 vaccine status in Japan.
 
-## オープンデータ
-全件  
-https://code4fukui.github.io/covid19vaccine/latest.csv  
-都道府県別サマリー  
-https://code4fukui.github.io/covid19vaccine/latest_summary.csv  
+## Open Data
+- Full dataset: https://code4fukui.github.io/covid19vaccine/latest.csv
+- Prefecture-level summary: https://code4fukui.github.io/covid19vaccine/latest_summary.csv
 
-## データ更新ポリシー
-公開されるNDJSONオープンデータを毎日22時ごろ、本リポジトリにCSVと共に更新します
+## Data Update Policy
+The NDJSON open data published by the government is updated to this repository as CSV files around 10PM daily.
 
-新型コロナワクチンの接種状況（高齢者等） | 政府CIOポータル  
-https://cio.go.jp/c19vaccine_dashboard  
+## Data Source
+- COVID-19 Vaccine Rollout Status (for Elderly, etc.) | Government CIO Portal: https://cio.go.jp/c19vaccine_dashboard
